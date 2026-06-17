@@ -1,0 +1,251 @@
+# ================================================================
+# .gitignore — Disparador WhatsApp
+# ================================================================
+# Node.js + Next.js + TypeScript + Prisma + Redis + BullMQ
+# ================================================================
+
+# ----------------------------------------------------------------
+# DEPENDÊNCIAS
+# ----------------------------------------------------------------
+
+node_modules/
+.pnpm-store/
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+
+# ----------------------------------------------------------------
+# BUILD / COMPILAÇÃO
+# ----------------------------------------------------------------
+
+# Next.js
+.next/
+out/
+dist/
+build/
+.nuxt/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ----------------------------------------------------------------
+# AMBIENTE E CONFIGURAÇÃO
+# ----------------------------------------------------------------
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Arquivos de configuração local
+*.local
+*.local.*
+!.env.local.example
+
+# ----------------------------------------------------------------
+# LOGS
+# ----------------------------------------------------------------
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------------------------------------------
+# TESTES E COBERTURA
+# ----------------------------------------------------------------
+
+coverage/
+.nyc_output/
+*.lcov
+*.lcov.info
+test-results/
+playwright-report/
+vitest-report/
+
+# ----------------------------------------------------------------
+# BANCO DE DADOS
+# ----------------------------------------------------------------
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+prisma/migrations/*.sql
+!prisma/migrations/migration_lock.toml
+*.sqlite
+*.sqlite3
+*.db
+
+# PostgreSQL
+*.pgsql
+*.dump
+
+# ----------------------------------------------------------------
+# REDIS / BULLMQ
+# ----------------------------------------------------------------
+
+# Arquivos temporários do Redis (se estiver usando persistência local)
+dump.rdb
+appendonly.aof
+*.redis*
+
+# ----------------------------------------------------------------
+# IDE / EDITORES
+# ----------------------------------------------------------------
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+*.code-workspace
+.vscode-test/
+
+# IntelliJ / WebStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# Vim
+*.swp
+*.swo
+*~
+*.un~
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Emacs
+*~
+
+# ----------------------------------------------------------------
+# SISTEMA OPERACIONAL
+# ----------------------------------------------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# Windows
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ----------------------------------------------------------------
+# ARQUIVOS TEMPORÁRIOS
+# ----------------------------------------------------------------
+
+*.tmp
+*.temp
+*.cache
+*.swp
+*.swo
+*~
+
+# ----------------------------------------------------------------
+# RELATÓRIOS E DOCUMENTOS
+# ----------------------------------------------------------------
+
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+checklist.md
+
+# ----------------------------------------------------------------
+# DEPLOY
+# ----------------------------------------------------------------
+
+.vercel/
+.vercel/output/
+.aws-sam/
+.serverless/
+
+# ----------------------------------------------------------------
+# DOCKER
+# ----------------------------------------------------------------
+
+# Docker volumes (se não forem versionados)
+docker-data/
+*.pid
+*.sock
+
+# ----------------------------------------------------------------
+# BULLMQ / FILAS
+# ----------------------------------------------------------------
+
+# Arquivos de persistência do BullMQ (se configurado)
+*.bullmq
+*.queue
+
+# ----------------------------------------------------------------
+# OUTROS
+# ----------------------------------------------------------------
+
+# Arquivos de backup
+*.bak
+*.backup
+*.orig
+
+# Arquivos de dump
+*.dump
+
+# Arquivos de crash
+core.*
+*.crash
+
+# ----------------------------------------------------------------
+# NEXT.JS ESPECÍFICOS
+# ----------------------------------------------------------------
+
+# Next.js build output
+.next/
+.vercel/
+out/
+
+# Next.js static files (se gerados)
+public/static/
+
+# ----------------------------------------------------------------
+# TURBOPACK / RSPACK
+# ----------------------------------------------------------------
+
+.turbo/
+.rspack_cache/
+
+# ----------------------------------------------------------------
+# LOCAL TESTES (arquivos de teste locais)
+# ----------------------------------------------------------------
+
+*.test.ts
+*.spec.ts
+*.test.js
+*.spec.js
+__tests__/
+*.test.tsx
+*.spec.tsx
+
+# ----------------------------------------------------------------
+# TEMPORÁRIOS DE WORKERS
+# ----------------------------------------------------------------
+
+# Workers podem gerar arquivos temporários
+*.worker.tmp
+*.pid

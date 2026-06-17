@@ -1,0 +1,76 @@
+{
+  "compilerOptions": {
+    /* --- LINGUAGEM E AMBIENTE --- */
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "preserve",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* --- MÓDULOS --- */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* --- ESTRUTURA DE PASTAS E PATHS --- */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/domain/*": ["./src/domain/*"],
+      "@/application/*": ["./src/application/*"],
+      "@/infrastructure/*": ["./src/infrastructure/*"],
+      "@/presentation/*": ["./src/presentation/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/workers/*": ["./src/workers/*"]
+    },
+
+    /* --- VERIFICAÇÃO DE TIPOS (STRICT) --- */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "exactOptionalPropertyTypes": false,
+
+    /* --- DECLARAÇÃO DE TIPOS E MAPAS --- */
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "removeComments": false,
+
+    /* --- OUTROS --- */
+    "skipLibCheck": true,
+    "allowJs": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".next/typescript/tsbuildinfo",
+
+    /* --- PLUGINS --- */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    ".next",
+    "*.test.ts",
+    "*.spec.ts",
+    "**/__tests__/**"
+  ]
+}
