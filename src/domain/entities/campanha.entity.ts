@@ -1,23 +1,11 @@
 // src/domain/entities/campanha.entity.ts
 
-import { DelayRange } from "../value-objects/intervalo_delay.vo";
+import { IntervaloDelay } from "../value-objects/intervalo_delay.vo";
 
-/**
- * Entidade Campanha (disparo único em massa).
- *
- * @example
- * const delay = DelayRange.criar(2, 5);
- * const campanha = new Campanha({
- *   mensagem: 'Olá, bem-vindo!',
- *   delay_range: delay,
- * });
- * campanha.atualizarMensagem('Olá, obrigado por se cadastrar!');
- * campanha.marcarComoExecutada();
- */
 export interface CampanhaProps {
   id?: string;
   mensagem: string;
-  delay_range: DelayRange;
+  delay_range: IntervaloDelay;
   criado_em?: Date;
   atualizado_em?: Date;
   criado_por?: string | null;
@@ -27,7 +15,7 @@ export interface CampanhaProps {
 export class Campanha {
   private readonly _id: string;
   private _mensagem: string;
-  private readonly _delay_range: DelayRange;
+  private readonly _delay_range: IntervaloDelay;
   private _criado_em: Date;
   private _atualizado_em: Date;
   private _criado_por: string | null;
@@ -51,10 +39,6 @@ export class Campanha {
     }
   }
 
-  // ============================
-  // GETTERS
-  // ============================
-
   get id(): string {
     return this._id;
   }
@@ -63,7 +47,7 @@ export class Campanha {
     return this._mensagem;
   }
 
-  get delay_range(): DelayRange {
+  get delay_range(): IntervaloDelay {
     return this._delay_range;
   }
 
@@ -87,42 +71,26 @@ export class Campanha {
     return this._executado_em !== null;
   }
 
-  // ============================
-  // MÉTODOS DE NEGÓCIO
-  // ============================
-
-  /**
-   * Atualiza a mensagem da campanha.
-   * @param nova_mensagem Nova mensagem (não pode ser vazia)
-   */
-  atualizarMensagem(nova_mensagem: string): void {
+  atualizar_mensagem(nova_mensagem: string): void {
     const mensagem_limpa = nova_mensagem.trim();
+
     if (!mensagem_limpa) {
       throw new Error("A mensagem não pode ser vazia.");
     }
+
     this._mensagem = mensagem_limpa;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Marca a campanha como executada (foi iniciada).
-   */
-  marcarComoExecutada(): void {
+  marcar_como_executada(): void {
     this._executado_em = new Date();
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Define quem criou a campanha (para auditoria).
-   */
-  definirCriador(usuario_id: string): void {
+  definir_criador(usuario_id: string): void {
     this._criado_por = usuario_id;
     this._atualizado_em = new Date();
   }
-
-  // ============================
-  // UTILITÁRIOS
-  // ============================
 
   toJSON() {
     return {

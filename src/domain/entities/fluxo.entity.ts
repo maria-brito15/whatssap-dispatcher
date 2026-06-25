@@ -3,14 +3,6 @@
 import { PassoFluxo } from "./fluxo_passo.entity";
 import { ExecucaoFluxo } from "./fluxo_execucao.entity";
 
-/**
- * Entidade Fluxo (sequência de mensagens automáticas).
- *
- * @example
- * const fluxo = new Fluxo({ nome: 'Onboarding de clientes' });
- * fluxo.adicionarPasso(new PassoFluxo({ ... }));
- * fluxo.softDelete();
- */
 export interface FluxoProps {
   id?: string;
   nome: string;
@@ -50,10 +42,6 @@ export class Fluxo {
       throw new Error("O nome do fluxo não pode ser vazio.");
     }
   }
-
-  // ============================
-  // GETTERS
-  // ============================
 
   get id(): string {
     return this._id;
@@ -99,14 +87,7 @@ export class Fluxo {
     return this._passos.length > 0 ? this._passos[0] : undefined;
   }
 
-  // ============================
-  // MÉTODOS DE NEGÓCIO
-  // ============================
-
-  /**
-   * Atualiza o nome do fluxo.
-   */
-  atualizarNome(novo_nome: string): void {
+  atualizar_nome(novo_nome: string): void {
     const nome_limpo = novo_nome.trim();
     if (!nome_limpo) {
       throw new Error("O nome do fluxo não pode ser vazio.");
@@ -115,27 +96,21 @@ export class Fluxo {
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Adiciona um novo passo ao fluxo.
-   * @throws {Error} Se já existir um passo com a mesma ordem
-   */
-  adicionarPasso(passo: PassoFluxo): void {
+  adicionar_passo(passo: PassoFluxo): void {
     const existe = this._passos.some((p) => p.ordem === passo.ordem);
+
     if (existe) {
       throw new Error(
         `Já existe um passo com ordem ${passo.ordem} neste fluxo.`,
       );
     }
+
     this._passos.push(passo);
     this._passos.sort((a, b) => a.ordem - b.ordem);
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Remove um passo do fluxo pela ordem.
-   * @throws {Error} Se o passo não for encontrado
-   */
-  removerPasso(ordem: number): void {
+  remover_passo(ordem: number): void {
     const index = this._passos.findIndex((p) => p.ordem === ordem);
     if (index === -1) {
       throw new Error(`Passo com ordem ${ordem} não encontrado.`);
@@ -144,56 +119,34 @@ export class Fluxo {
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Busca um passo pela ordem.
-   */
-  buscarPassoPorOrdem(ordem: number): PassoFluxo | undefined {
+  buscar_passo_por_ordem(ordem: number): PassoFluxo | undefined {
     return this._passos.find((p) => p.ordem === ordem);
   }
 
-  /**
-   * Busca o próximo passo após uma ordem específica.
-   */
   proximoPasso(ordem_atual: number): PassoFluxo | undefined {
     return this._passos.find((p) => p.ordem > ordem_atual);
   }
 
-  /**
-   * Verifica se o fluxo tem passos configurados.
-   */
-  temPassos(): boolean {
+  tem_passos(): boolean {
     return this._passos.length > 0;
   }
 
-  /**
-   * Soft delete do fluxo.
-   */
-  softDelete(): void {
+  soft_delete(): void {
     if (this.esta_deletado) return;
     this._deletado_em = new Date();
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Restaura um fluxo deletado.
-   */
   restaurar(): void {
     if (!this.esta_deletado) return;
     this._deletado_em = null;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Define quem criou o fluxo (para auditoria).
-   */
-  definirCriador(usuario_id: string): void {
+  definir_criador(usuario_id: string): void {
     this._criado_por = usuario_id;
     this._atualizado_em = new Date();
   }
-
-  // ============================
-  // UTILITÁRIOS
-  // ============================
 
   toJSON() {
     return {

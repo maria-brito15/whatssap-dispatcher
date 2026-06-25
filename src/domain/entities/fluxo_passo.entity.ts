@@ -1,17 +1,5 @@
 // src/domain/entities/fluxo_passo.entity.ts
 
-/**
- * Entidade Passo (etapa) de um fluxo.
- *
- * @example
- * const passo = new PassoFluxo({
- *   fluxo_id: 'fluxo-123',
- *   mensagem: 'Bem-vindo ao nosso sistema!',
- *   delay_segundos: 0,
- *   ordem: 1,
- * });
- * passo.atualizarDelay(120); // altera delay para 2 minutos
- */
 export interface PassoFluxoProps {
   id?: string;
   fluxo_id: string;
@@ -47,17 +35,15 @@ export class PassoFluxo {
     if (!this._mensagem || this._mensagem.trim().length === 0) {
       throw new Error("A mensagem do passo não pode ser vazia.");
     }
+
     if (this._delay_segundos < 0) {
       throw new Error("O delay não pode ser negativo.");
     }
+
     if (this._ordem < 1) {
       throw new Error("A ordem do passo deve ser maior ou igual a 1.");
     }
   }
-
-  // ============================
-  // GETTERS
-  // ============================
 
   get id(): string {
     return this._id;
@@ -87,36 +73,25 @@ export class PassoFluxo {
     return this._atualizado_em;
   }
 
-  // ============================
-  // MÉTODOS DE NEGÓCIO
-  // ============================
-
-  /**
-   * Atualiza a mensagem do passo.
-   */
-  atualizarMensagem(nova_mensagem: string): void {
+  atualizar_mensagem(nova_mensagem: string): void {
     const mensagem_limpa = nova_mensagem.trim();
+
     if (!mensagem_limpa) {
       throw new Error("A mensagem do passo não pode ser vazia.");
     }
+
     this._mensagem = mensagem_limpa;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Atualiza o delay do passo.
-   */
-  atualizarDelay(novo_delay: number): void {
+  atualizar_delay(novo_delay: number): void {
     if (novo_delay < 0) {
       throw new Error("O delay não pode ser negativo.");
     }
+
     this._delay_segundos = novo_delay;
     this._atualizado_em = new Date();
   }
-
-  // ============================
-  // UTILITÁRIOS
-  // ============================
 
   toJSON() {
     return {

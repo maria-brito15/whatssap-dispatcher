@@ -3,24 +3,6 @@
 import { StatusExecucaoFluxo } from "../enums/status_execucao_fluxo.enum";
 import { MotivoPausa } from "../enums/motivo_pausa.enum";
 
-/**
- * Entidade Execução de Fluxo (estado de um contato em um fluxo).
- *
- * @example
- * const exec = new ExecucaoFluxo({
- *   fluxo_id: 'fluxo-123',
- *   contato_id: 'contato-456',
- *   passo_atual: 1,
- *   status: StatusExecucaoFluxo.ATIVO,
- *   proxima_execucao_em: new Date(),
- * });
- *
- * exec.avancarPasso(2);
- * exec.agendarProximo(new Date(Date.now() + 120000)); // 2 min
- * exec.pausar(MotivoPausa.FALHA);
- * exec.reativar();
- * exec.concluir();
- */
 export interface ExecucaoFluxoProps {
   id?: string;
   fluxo_id: string;
@@ -65,15 +47,13 @@ export class ExecucaoFluxo {
     if (this._passo_atual < 1) {
       throw new Error("O passo atual deve ser maior ou igual a 1.");
     }
+
     if (this._status === StatusExecucaoFluxo.PAUSADO && !this._motivo_pausa) {
-      // Se está pausado, deve ter um motivo (opcional, mas recomendado)
-      // Não lança erro para permitir migrações
+      throw new Error(
+        "Uma execução pausada deve ter um motivo de pausa informado.",
+      );
     }
   }
-
-  // ============================
-  // GETTERS
-  // ============================
 
   get id(): string {
     return this._id;
@@ -131,86 +111,60 @@ export class ExecucaoFluxo {
     return this.esta_pausado && this._motivo_pausa !== MotivoPausa.MANUAL;
   }
 
-  // ============================
-  // MÉTODOS DE NEGÓCIO
-  // ============================
-
-  /**
-   * Avança para o próximo passo.
-   * @param novo_passo Número do novo passo (deve ser maior que o atual)
-   */
-  avancarPasso(novo_passo: number): void {
+  avancar_passo(novo_passo: number): void {
     if (novo_passo <= this._passo_atual) {
       throw new Error(
         `O novo passo (${novo_passo}) deve ser maior que o atual (${this._passo_atual}).`,
       );
     }
+
     this._passo_atual = novo_passo;
     this._status = StatusExecucaoFluxo.ATIVO;
     this._motivo_pausa = null;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Agenda a próxima execução do fluxo.
-   * @param data_proxima Data/hora da próxima execução (deve ser no futuro)
-   */
-  agendarProximo(data_proxima: Date): void {
+  agendar_proximo(data_proxima: Date): void {
     const agora = new Date();
+
     if (data_proxima <= agora) {
       throw new Error("A próxima execução deve ser no futuro.");
     }
+
     this._proxima_execucao_em = data_proxima;
     this._status = StatusExecucaoFluxo.ATIVO;
     this._motivo_pausa = null;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Pausa a execução do fluxo.
-   * @param motivo Motivo da pausa (falha, manual ou abandonado)
-   */
   pausar(motivo: MotivoPausa): void {
     this._status = StatusExecucaoFluxo.PAUSADO;
     this._motivo_pausa = motivo;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Reativa uma execução pausada.
-   * @throws {Error} Se a execução não estiver pausada
-   */
   reativar(): void {
     if (!this.esta_pausado) {
       throw new Error(
         "Não é possível reativar uma execução que não está pausada.",
       );
     }
+
     this._status = StatusExecucaoFluxo.ATIVO;
     this._motivo_pausa = null;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Conclui a execução do fluxo (último passo enviado).
-   */
   concluir(): void {
     this._status = StatusExecucaoFluxo.CONCLUIDO;
     this._motivo_pausa = null;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Registra o ID da última mensagem enviada.
-   */
-  registrarUltimaMensagem(mensagem_id: string): void {
+  registrar_ultima_mensagem(mensagem_id: string): void {
     this._ultima_mensagem_id = mensagem_id;
     this._atualizado_em = new Date();
   }
-
-  // ============================
-  // UTILITÁRIOS
-  // ============================
 
   toJSON() {
     return {

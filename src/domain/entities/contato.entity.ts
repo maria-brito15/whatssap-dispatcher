@@ -2,16 +2,6 @@
 
 import { Telefone } from "../value-objects/telefone.vo";
 
-/**
- * Entidade Contato (destinatário de mensagens).
- * Contém dados básicos do contato e o telefone como Value Object.
- *
- * @example
- * const telefone = Telefone.criar('11999999999');
- * const contato = new Contato({ nome: 'João Silva', telefone });
- * contato.atualizarNome('João Souza');
- * contato.softDelete();
- */
 export interface ContatoProps {
   id?: string;
   nome: string;
@@ -46,10 +36,6 @@ export class Contato {
     }
   }
 
-  // ============================
-  // GETTERS
-  // ============================
-
   get id(): string {
     return this._id;
   }
@@ -78,44 +64,29 @@ export class Contato {
     return this._deletado_em !== null;
   }
 
-  // ============================
-  // MÉTODOS DE NEGÓCIO
-  // ============================
-
-  /**
-   * Atualiza o nome do contato.
-   * @param novo_nome Novo nome (não pode ser vazio)
-   */
-  atualizarNome(novo_nome: string): void {
+  atualizar_nome(novo_nome: string): void {
     const nome_limpo = novo_nome.trim();
+
     if (!nome_limpo) {
       throw new Error("O nome não pode ser vazio.");
     }
+
     this._nome = nome_limpo;
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Realiza soft delete do contato (marca como deletado).
-   */
-  softDelete(): void {
+  soft_delete(): void {
     if (this.esta_deletado) return;
     this._deletado_em = new Date();
     this._atualizado_em = new Date();
   }
 
-  /**
-   * Restaura um contato que foi deletado (soft delete).
-   */
   restaurar(): void {
     if (!this.esta_deletado) return;
+
     this._deletado_em = null;
     this._atualizado_em = new Date();
   }
-
-  // ============================
-  // UTILITÁRIOS
-  // ============================
 
   toJSON() {
     return {
